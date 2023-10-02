@@ -45,12 +45,17 @@
             <th>Name</th>
             <th>Day</th>
             <th>Type</th>
+            <th>Actions</th>
             </thead>
             <tbody>
             <tr th:each="holiday : ${holidaysResult}">
                 <td th:text="${holiday.reason}"></td>
                 <td th:text="${holiday.day}"></td>
                 <td th:text="${holiday.type}"></td>
+                <td>
+                    <a th:href="@{/holidays/{id}(id=${holiday.id})}" class="btn btn-primary">Ver Detalles</a>
+                </td>
+
             </tr>
             </tbody>
         </table>
@@ -61,6 +66,15 @@
 
     </div>
 
+    <hr class="my-4">
+
+    <h4>Holiday selected: </h4>
+
+    <div th:if="${holidaySelected != null}">
+        <p th:text="${holidaySelected.day}"></p>
+        <p th:text="${holidaySelected.reason}"></p>
+        <p th:text="${holidaySelected.type}"></p>
+    </div>
     <div th:replace="~{fragments/footer :: footer}"></div>
 </div>
 </body>

@@ -29,4 +29,8 @@ public class HolidayService {
         }
         return holidays.stream().filter(holiday -> holiday.getDay().compareTo(from) >= 0 && holiday.getDay().compareTo(to) <= 0).toList();
     }
+
+    public HolidayDTO getHolidayById(String id) {
+        return holidayRepository.findById(id);
+    }
 }

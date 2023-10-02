@@ -6,6 +6,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 public class HolidayDTO {
+    private final String id;
     private final String day;
     private final String reason;
     private final Type type;
