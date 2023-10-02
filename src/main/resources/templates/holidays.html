@@ -14,16 +14,50 @@
 
     <div th:replace="~{fragments/header :: header}"></div>
 
-    <h1>Holidays</h1>
+    <div class="col-sm-12">
+        <h4 class="mb-3">List of Holidays</h4>
+        <h5 class="text-muted">Example with @RequestParams</h5>
+        <hr class="my-4">
+        <form class="needs-validation" th:action="@{/holidaysByDate}" method="get">
+            <div class="row g-3">
+                <div class="col-sm-6">
+                    <label for="from" class="form-label">Desde</label>
+                    <input type="date" id="from" class="form-control" name="from" th:value="${from}">
+                </div>
+                <div class="col-sm-6">
+                    <label for="to" class="form-label">Hasta</label>
+                    <input type="date" id="to" class="form-control" name="to" th:value="${to}">
+                </div>
+            </div>
+            <hr class="my-4">
 
-    <div th:each="holiday : ${holidays}" class="column">
-        <div class="title">
-            <h3 th:text="${holiday.reason}"></h3>
-        </div>
-        <div class="content">
-            <p th:text="${holiday.day}"></p>
-            <p th:text="${holiday.type}"></p>
-        </div>
+            <button class="w-100 btn btn-primary btn-lg" type="submit">Filtrar</button>
+        </form>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="col-sm-12" th:if="${not #lists.isEmpty(holidaysResult)}">
+
+        <h4>Holidays</h4>
+        <table class="table">
+            <thead>
+            <th>Name</th>
+            <th>Day</th>
+            <th>Type</th>
+            </thead>
+            <tbody>
+            <tr th:each="holiday : ${holidaysResult}">
+                <td th:text="${holiday.reason}"></td>
+                <td th:text="${holiday.day}"></td>
+                <td th:text="${holiday.type}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-sm-12" th:if="${#lists.isEmpty(holidaysResult)}">
+
+        <h4>No hay resultados</h4>
 
     </div>
 

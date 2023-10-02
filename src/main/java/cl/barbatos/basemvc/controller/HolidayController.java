@@ -1,27 +1,30 @@
 package cl.barbatos.basemvc.controller;
 
-import cl.barbatos.basemvc.model.dto.HolidayDTO;
-import cl.barbatos.basemvc.model.enums.Type;
+import cl.barbatos.basemvc.service.HolidayService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.Arrays;
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HolidayController {
 
+   private HolidayService holidayService;
+
+   public HolidayController(HolidayService holidayService) {
+       this.holidayService = holidayService;
+   }
+
     @GetMapping("/holidays")
     public String getAllHolidays(Model model) {
+        model.addAttribute("holidays", holidayService.getAllHolidays());
+        return "holidays.html";
+    }
 
-        List<HolidayDTO> holidays = Arrays.asList(
-                new HolidayDTO("2020-01-01", "Año Nuevo", Type.National),
-                new HolidayDTO("2020-04-10", "Viernes Santo", Type.Religious)
-        );
+    @GetMapping("/holidaysByDate")
+    public String getHolidaysByDateRange(@RequestParam(value = "from", required = false) String from, @RequestParam(value = "to", required = false) String to, Model model) {
 
-        model.addAttribute("holidays", holidays);
-
+        model.addAttribute("holidaysResult", holidayService.getHolidaysByDateRange(from, to));
         return "holidays.html";
     }
 }
