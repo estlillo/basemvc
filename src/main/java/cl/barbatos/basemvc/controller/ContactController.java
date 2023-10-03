@@ -2,9 +2,13 @@ package cl.barbatos.basemvc.controller;
 
 import cl.barbatos.basemvc.model.dto.ContactDTO;
 import cl.barbatos.basemvc.service.ContactService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +27,8 @@ public class ContactController {
     }
 
     @RequestMapping(value = {"/contact"})
-    public String displayContactPage() {
+    public String displayContactPage(Model model) {
+        model.addAttribute("contact", new ContactDTO());
         return "contact.html";
     }
 
@@ -40,9 +45,15 @@ public class ContactController {
     }
 
     @PostMapping(value = "/saveInfo")
-    public ModelAndView saveInfo(ContactDTO contact) {
+    public String saveInfo(@Valid @ModelAttribute("contact") ContactDTO contact, Errors errors){
+
+        if(errors.hasErrors()){
+            log.error("Errors: " + errors.toString());
+            return "contact.html";
+        }
+
         contactService.saveInfo(contact);
-        return new ModelAndView("redirect:/contact", "message", "Your information has been saved successfully!");
+        return "redirect:/contact";
     }
 
 

@@ -36,7 +36,7 @@ public class HolidayController {
     public String getHolidayById(@PathVariable String id, Model model) {
 
         HolidayDTO holiday = holidayService.getHolidayById(id);
-
+        model.addAttribute("holidaysResult", holidayService.getAllHolidays());
         model.addAttribute("holidaySelected",  holiday);
         return "holidays.html";
     }

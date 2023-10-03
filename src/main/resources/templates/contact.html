@@ -15,25 +15,30 @@
     <div>
         <h4 class="mb-3">Contact Info</h4>
         <hr class="my-4">
-        <form class="needs-validation" novalidate="" th:action="@{/saveInfo}" method="post">
+        <div class="row g-3 p-1">
+            <ul>
+                <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('contact.*')}"
+                    th:text="${error}"></li>
+            </ul>
+        </div>
+        <form class="needs-validation" th:action="@{/saveInfo}" method="post" th:object="${contact}">
             <div class="row g-3">
                 <div class="col-sm-6">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="" value="" required="">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" th:field="*{name}" placeholder="" value="">
                 </div>
 
                 <div class="col-6">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" th:field="*{email}" placeholder="you@example.com">
                 </div>
 
                 <div class="col-12">
-                    <label for="message" class="form-label">Message</label>
-                    <textarea class="form-control" id="message" name="message" rows="3"></textarea>
+                    <label class="form-label">Message</label>
+                    <textarea class="form-control" th:field="*{message}" rows="3"></textarea>
                 </div>
             </div>
             <hr class="my-4">
-
             <button class="w-100 btn btn-primary btn-lg" type="submit">Send!</button>
         </form>
     </div>
