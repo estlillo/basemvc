@@ -25,7 +25,7 @@ public class HolidayController {
         return "holidays.html";
     }
 
-    @GetMapping("/holidaysByDate")
+    @GetMapping("/holidays/date")
     public String getHolidaysByDateRange(@RequestParam(value = "from", required = false) String from, @RequestParam(value = "to", required = false) String to, Model model) {
 
         model.addAttribute("holidaysResult", holidayService.getHolidaysByDateRange(from, to));

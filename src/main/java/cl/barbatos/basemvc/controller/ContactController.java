@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -44,7 +45,7 @@ public class ContactController {
         return new ModelAndView("redirect:/contact", "message", "Your information has been saved successfully!");
     }
 
-    @PostMapping(value = "/saveInfo")
+    @PostMapping(value = "/contact/saveInfo")
     public String saveInfo(@Valid @ModelAttribute("contact") ContactDTO contact, Errors errors){
 
         if(errors.hasErrors()){
@@ -53,6 +54,8 @@ public class ContactController {
         }
 
         contactService.saveInfo(contact);
+        contactService.setCounter(contactService.getCounter() + 1);
+        log.info("Counter: " + contactService.getCounter());
         return "redirect:/contact";
     }
 
