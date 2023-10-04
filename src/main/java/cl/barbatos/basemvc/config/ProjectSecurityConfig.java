@@ -17,17 +17,20 @@ public class ProjectSecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/", "/home", "/features", "/about").permitAll()
+                        .requestMatchers("/dashboard/**").authenticated()
+                        .requestMatchers("/", "/home", "/features", "/about").authenticated()
                         .requestMatchers("/holidays/**").hasRole("ADMIN")
                         .requestMatchers("/contact/**").authenticated())
-                .formLogin(Customizer.withDefaults())
+                .formLogin(loginConfigurer -> loginConfigurer.loginPage("/login")
+                        .defaultSuccessUrl("/dashboard").failureUrl("/login?error=true").permitAll())
+                .logout(logoutConfigurer -> logoutConfigurer.logoutSuccessUrl("/login?logout=true")
+                        .invalidateHttpSession(true).permitAll())
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }
 
     @Bean
     public UserDetailsService users() {
-
 
 
         UserDetails user = User.builder()
