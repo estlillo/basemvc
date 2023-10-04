@@ -18,7 +18,8 @@ public class ProjectSecurityConfig {
         http.csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/dashboard/**").authenticated()
-                        .requestMatchers("/", "/home", "/features", "/about").authenticated()
+                        .requestMatchers("/home", "/").permitAll()
+                        .requestMatchers("/features", "/about").authenticated()
                         .requestMatchers("/holidays/**").hasRole("ADMIN")
                         .requestMatchers("/contact/**").authenticated())
                 .formLogin(loginConfigurer -> loginConfigurer.loginPage("/login")
