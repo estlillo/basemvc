@@ -15,13 +15,15 @@ public class ProjectSecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf((csrf) -> csrf.disable())
+        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/login"))
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/dashboard/**").authenticated()
                         .requestMatchers("/home", "/").permitAll()
                         .requestMatchers("/features", "/about").authenticated()
                         .requestMatchers("/holidays/**").hasRole("ADMIN")
-                        .requestMatchers("/contact/**").authenticated())
+                        .requestMatchers("/contact/**").authenticated()
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/logout").authenticated())
                 .formLogin(loginConfigurer -> loginConfigurer.loginPage("/login")
                         .defaultSuccessUrl("/dashboard").failureUrl("/login?error=true").permitAll())
                 .logout(logoutConfigurer -> logoutConfigurer.logoutSuccessUrl("/login?logout=true")
