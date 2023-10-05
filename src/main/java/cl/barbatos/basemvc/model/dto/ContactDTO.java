@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ContactDTO {
+public class ContactDTO extends Base{
 
     @NotBlank(message = "Name must not be blank")
     @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")

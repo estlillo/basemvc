@@ -1,5 +1,6 @@
 package cl.barbatos.basemvc.config;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -9,21 +10,28 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @Configuration
 public class ProjectSecurityConfig {
 
     @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/login"))
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
+        MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
+
+
+        http.csrf((csrf) -> csrf.ignoringRequestMatchers(mvcMatcherBuilder.pattern("/contact/saveInfo")))
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/dashboard/**").authenticated()
-                        .requestMatchers("/home", "/").permitAll()
-                        .requestMatchers("/features", "/about").authenticated()
-                        .requestMatchers("/holidays/**").hasRole("ADMIN")
-                        .requestMatchers("/contact/**").authenticated()
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/logout").authenticated())
+                        .requestMatchers(mvcMatcherBuilder.pattern("/dashboard/**")).authenticated()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/home")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/features/**")).authenticated()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/about/**")).authenticated()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/holidays/**")).hasRole("ADMIN")
+                        .requestMatchers(mvcMatcherBuilder.pattern("/contact/**")).authenticated()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/login")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/logout")).authenticated())
                 .formLogin(loginConfigurer -> loginConfigurer.loginPage("/login")
                         .defaultSuccessUrl("/dashboard").failureUrl("/login?error=true").permitAll())
                 .logout(logoutConfigurer -> logoutConfigurer.logoutSuccessUrl("/login?logout=true")
