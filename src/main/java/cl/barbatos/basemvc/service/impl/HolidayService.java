@@ -1,9 +1,10 @@
-package cl.barbatos.basemvc.service;
+package cl.barbatos.basemvc.service.impl;
 
 import cl.barbatos.basemvc.exception.NotFoundException;
 import cl.barbatos.basemvc.model.dto.HolidayDTO;
 import cl.barbatos.basemvc.model.entity.Holiday;
 import cl.barbatos.basemvc.repository.HolidayRepository;
+import cl.barbatos.basemvc.service.IHolidayService;
 import cl.barbatos.basemvc.util.ComparatorUtil;
 import cl.barbatos.basemvc.util.DtoConverter;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class HolidayService {
+public class HolidayService implements IHolidayService {
 
     private final HolidayRepository holidayRepository;
 
@@ -25,6 +26,7 @@ public class HolidayService {
         this.holidayRepository = holidayRepository;
     }
 
+    @Override
     public List<HolidayDTO> getAllHolidays() {
 
         List<Holiday> holidaysList = holidayRepository.findAll();
@@ -32,11 +34,13 @@ public class HolidayService {
         return convertToHolidayDTOs(holidaysList);
     }
 
+    @Override
     public HolidayDTO getHolidayById(Long id) {
         Holiday holiday = holidayRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
         return DtoConverter.convertToDto(holiday, HolidayDTO.class);
     }
 
+    @Override
     public List<HolidayDTO> getHolidaysByDateRange(String from, String to) {
         if (ComparatorUtil.isDateValid(from) && ComparatorUtil.isDateValid(to)) {
             LocalDate startDate = LocalDate.parse(from);

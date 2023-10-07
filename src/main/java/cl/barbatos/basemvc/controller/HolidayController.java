@@ -1,7 +1,8 @@
 package cl.barbatos.basemvc.controller;
 
 import cl.barbatos.basemvc.model.dto.HolidayDTO;
-import cl.barbatos.basemvc.service.HolidayService;
+import cl.barbatos.basemvc.service.IHolidayService;
+import cl.barbatos.basemvc.service.impl.HolidayService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class HolidayController {
 
-   private HolidayService holidayService;
+   private IHolidayService holidayService;
 
    public HolidayController(HolidayService holidayService) {
        this.holidayService = holidayService;

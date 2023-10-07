@@ -4,7 +4,7 @@ import cl.barbatos.basemvc.model.dto.HolidayDTO;
 import cl.barbatos.basemvc.model.entity.Holiday;
 import cl.barbatos.basemvc.model.enums.Type;
 import cl.barbatos.basemvc.repository.HolidayRepository;
-import org.aspectj.lang.annotation.Before;
+import cl.barbatos.basemvc.service.impl.HolidayService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -18,8 +18,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HolidayServiceTest {
-
-
     @InjectMocks
     private HolidayService holidayService;
 

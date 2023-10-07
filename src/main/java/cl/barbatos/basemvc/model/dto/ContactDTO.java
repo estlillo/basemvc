@@ -5,12 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ContactDTO extends Base{
+public class ContactDTO implements Serializable {
 
     @NotBlank(message = "Name must not be blank")
     @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")

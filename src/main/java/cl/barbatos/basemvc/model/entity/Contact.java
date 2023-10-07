@@ -1,6 +1,5 @@
 package cl.barbatos.basemvc.model.entity;
 
-import cl.barbatos.basemvc.model.enums.Type;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,26 +7,28 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "holidays")
-public class Holiday extends Auditable implements Serializable {
+@Table(name = "contacts")
+public class Contact extends Auditable implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private LocalDate day;
+    private String name;
 
     @Column(nullable = false)
-    private String reason;
+    private String email;
 
-    @Enumerated(EnumType.STRING)
-    private Type type;
+    @Column(nullable = false)
+    private String message;
+
+    @Column(nullable = false)
+    private boolean status = false;
 
 }

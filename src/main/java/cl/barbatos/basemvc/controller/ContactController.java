@@ -1,7 +1,8 @@
 package cl.barbatos.basemvc.controller;
 
 import cl.barbatos.basemvc.model.dto.ContactDTO;
-import cl.barbatos.basemvc.service.ContactService;
+import cl.barbatos.basemvc.service.IContactService;
+import cl.barbatos.basemvc.service.impl.ContactService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -20,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ContactController {
 
-    private final ContactService contactService;
+    private IContactService contactService;
 
     @Autowired
     public ContactController(ContactService contactService) {
@@ -53,9 +53,10 @@ public class ContactController {
             return "contact.html";
         }
 
-        contactService.saveInfo(contact);
-        contactService.setCounter(contactService.getCounter() + 1);
-        log.info("Counter: " + contactService.getCounter());
+        if(contactService.saveInfo(contact)){
+            log.info("Contact saved successfully");
+        }
+
         return "redirect:/contact";
     }
 
