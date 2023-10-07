@@ -12,6 +12,7 @@
 
 <div class="container lg-4 p-5">
     <div th:replace="~{fragments/header :: header}"></div>
+    <h1>Login</h1>
     <form th:action="@{/login}" method="post" class="signin-form">
         <div class="mb-3">
             <ul>
@@ -31,7 +32,7 @@
         <input type="hidden" class="form-control" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" >
         <div class="col-md-8 login-center text-start">
             <button type="submit" class="btn btn-primary">Submit</button>
-            <a class="btn btn-primary" href="/register">Register</a>
+            <a class="btn btn-primary" th:href="@{/public/register}">Register</a>
         </div>
 
     </form>
