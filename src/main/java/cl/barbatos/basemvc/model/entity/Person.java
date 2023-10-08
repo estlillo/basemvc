@@ -26,6 +26,9 @@ public class Person extends Auditable {
     @Column(nullable = false)
     private String email;
 
+    @Column(nullable = true)
+    private String username;
+
     @Column(nullable = false)
     private String password;
 
