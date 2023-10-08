@@ -11,9 +11,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -22,6 +22,9 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     private PersonRepository personRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     @Transactional
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -29,7 +32,7 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
         String password = authentication.getCredentials().toString();
         Person person = personRepository.findByUsername(username);
 
-        if (person != null && person.getPassword().equals(password)) {
+        if (person != null && isPasswordMatches(password, person.getPassword())) {
             return new UsernamePasswordAuthenticationToken(username, password, getGrantedAuthorities(person.getRoles()));
         } else {
             throw new BadCredentialsException("Invalid credentials");
@@ -40,6 +43,10 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
         return roles.stream()
                 .map(role -> (GrantedAuthority) role::getRoleName)
                 .toList();
+    }
+
+    private boolean isPasswordMatches(String password, String savedPassword) {
+        return passwordEncoder.matches(password, savedPassword);
     }
 
     @Override

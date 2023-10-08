@@ -24,13 +24,15 @@ public class PersonDTO implements Serializable {
     @NotBlank(message = "Name is required")
     private String name;
 
+    @NotBlank(message = "Username is required")
+    private String username;
+
     @NotBlank(message = "Password is required")
     @PasswordValidator
     private String password;
 
     @NotBlank(message = "Confirm password is required")
     private String confirmPassword;
-
 
     @NotBlank(message = "Email is required")
     @Email(message = "Email is not valid")

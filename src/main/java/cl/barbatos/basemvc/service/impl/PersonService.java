@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,13 +27,13 @@ public class PersonService implements IPersonService {
 
     private final RoleRepository roleRepository;
 
-    private final AddressRepository addressRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public PersonService(PersonRepository personRepository, RoleRepository roleRepository, AddressRepository addressRepository) {
+    public PersonService(PersonRepository personRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.personRepository = personRepository;
         this.roleRepository = roleRepository;
-        this.addressRepository = addressRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -47,6 +48,7 @@ public class PersonService implements IPersonService {
                     .toList();
 
             newPerson.setRoles(roles);
+            newPerson.setPassword(passwordEncoder.encode(person.getPassword()));
 
             personRepository.save(newPerson);
             return true;
@@ -54,7 +56,6 @@ public class PersonService implements IPersonService {
             throw new RuntimeException("Error al guardar la persona", ex);
         }
     }
-
 
 
     @Transactional // Asegura una transacción para actualizar la persona y sus roles
