@@ -40,5 +40,8 @@ public class Person extends Auditable {
     )
     private List<Role> roles;
 
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL, targetEntity = Address.class)
+    @JoinColumn(name = "address_id", referencedColumnName = "id",nullable = true)
+    private Address address;
 
 }
