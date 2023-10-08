@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -45,7 +47,14 @@ public class HolidayService implements IHolidayService {
         if (ComparatorUtil.isDateValid(from) && ComparatorUtil.isDateValid(to)) {
             LocalDate startDate = LocalDate.parse(from);
             LocalDate endDate = LocalDate.parse(to);
-            return convertToHolidayDTOs(holidayRepository.findByDayBetween(startDate, endDate));
+
+            List<Holiday> holidaysList = holidayRepository.findByDayBetween(startDate, endDate);
+
+            if (holidaysList == null) {
+                holidaysList = Collections.emptyList();
+            }
+
+            return convertToHolidayDTOs(holidaysList);
         } else {
             return getAllHolidays();
         }
@@ -54,6 +63,7 @@ public class HolidayService implements IHolidayService {
 
     private List<HolidayDTO> convertToHolidayDTOs(List<Holiday> holidays) {
         return holidays.stream()
+                .filter(Objects::nonNull)
                 .map(holiday -> DtoConverter.convertToDto(holiday, HolidayDTO.class))
                 .collect(Collectors.toList());
     }

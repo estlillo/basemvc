@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -29,5 +31,14 @@ public class Person extends Auditable {
 
     @Column(nullable = true)
     private String mobileNumber;
+
+    @ManyToMany
+    @JoinTable(
+            name = "person_role",
+            joinColumns = @JoinColumn(name = "person_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> roles;
+
 
 }

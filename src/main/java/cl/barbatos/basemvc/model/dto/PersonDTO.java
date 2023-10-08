@@ -2,6 +2,7 @@ package cl.barbatos.basemvc.model.dto;
 
 import cl.barbatos.basemvc.annotation.FieldsValueMatch;
 import cl.barbatos.basemvc.annotation.PasswordValidator;
+import cl.barbatos.basemvc.model.entity.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -9,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -41,4 +43,7 @@ public class PersonDTO implements Serializable {
     @NotBlank(message = "Mobile number is required")
     @Pattern(regexp = "^(\\+56|56)?(\\s?)(0?9)(\\s?)[9876543]\\d{7}$", message = "Mobile number is not valid")
     private String mobileNumber;
+
+    private List<String> roles;
+
 }

@@ -48,9 +48,21 @@
             <label  class="form-label">Confirm Password</label>
             <input type="password" class="form-control" th:field="*{confirmPassword}" >
         </div>
-        <div class="col-md-8 login-center text-start">
+
+        <div class="col-md-12 login-center text-start">
+            <h3>Roles</h3>
+            <div th:each="role : ${availableRoles}" class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" th:value="${role.roleName}" th:field="*{roles}">
+                <label class="form-check-label" th:text="${role.roleName}"></label>
+            </div>
+
+        </div>
+
+        <div class="col-md-12 login-center text-start">
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
+
+
 
     </form>
 </div>
