@@ -4,6 +4,7 @@ import cl.barbatos.basemvc.model.dto.HolidayDTO;
 import cl.barbatos.basemvc.service.IHolidayService;
 import cl.barbatos.basemvc.service.impl.HolidayService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class HolidayController {
 
-   private IHolidayService holidayService;
+   private final IHolidayService holidayService;
 
+   @Autowired
    public HolidayController(HolidayService holidayService) {
        this.holidayService = holidayService;
    }

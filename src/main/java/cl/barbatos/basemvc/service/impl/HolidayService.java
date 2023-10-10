@@ -10,6 +10,8 @@ import cl.barbatos.basemvc.util.ComparatorUtil;
 import cl.barbatos.basemvc.util.DtoConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -64,8 +66,18 @@ public class HolidayService implements IHolidayService {
 
     }
 
+    @Autowired
+    Environment environment;
+
+    @Value("${basemvc.pageSize}")
+    private int pageSize;
+
     @Override
     public Page<HolidayDTO> getAllHolidays(Pageable pageable) {
+
+        log.info("pageSize: " + pageSize);
+        log.info("pageSize with env: " + environment.getProperty("basemvc.pageSize"));
+
         Page<Holiday> holidaysPage = holidayRepository.findAll(pageable);
         return holidaysPage.map(holiday -> DtoConverter.convertToDto(holiday, HolidayDTO.class));
     }

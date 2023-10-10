@@ -5,6 +5,7 @@ import cl.barbatos.basemvc.model.entity.Role;
 import cl.barbatos.basemvc.repository.PersonRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -45,6 +46,7 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
                 .toList();
     }
 
+    @Profile("!prod")
     private boolean isPasswordMatches(String password, String savedPassword) {
         return passwordEncoder.matches(password, savedPassword);
     }
