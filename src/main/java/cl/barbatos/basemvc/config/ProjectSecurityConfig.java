@@ -19,7 +19,8 @@ public class ProjectSecurityConfig {
 
 
         http.csrf((csrf) -> csrf.ignoringRequestMatchers(mvcMatcherBuilder.pattern("/contact/saveInfo"))
-                        .ignoringRequestMatchers(mvcMatcherBuilder.pattern("/public/**")))
+                        .ignoringRequestMatchers(mvcMatcherBuilder.pattern("/public/**"))
+                        .ignoringRequestMatchers(mvcMatcherBuilder.pattern("/api/**")))
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(mvcMatcherBuilder.pattern("/dashboard/**")).authenticated()
                         .requestMatchers(mvcMatcherBuilder.pattern("/home")).permitAll()
@@ -30,6 +31,7 @@ public class ProjectSecurityConfig {
                         .requestMatchers(mvcMatcherBuilder.pattern("/contact/**")).authenticated()
                         .requestMatchers(mvcMatcherBuilder.pattern("/login")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/public/**")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/api/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/logout")).authenticated())
                 .formLogin(loginConfigurer -> loginConfigurer.loginPage("/login")
                         .defaultSuccessUrl("/dashboard").failureUrl("/login?error=true").permitAll())

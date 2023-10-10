@@ -2,6 +2,7 @@ package cl.barbatos.basemvc.service.impl;
 
 import cl.barbatos.basemvc.exception.NotFoundException;
 import cl.barbatos.basemvc.model.dto.HolidayDTO;
+import cl.barbatos.basemvc.model.dto.filter.HolidayFilterDTO;
 import cl.barbatos.basemvc.model.entity.Holiday;
 import cl.barbatos.basemvc.repository.HolidayRepository;
 import cl.barbatos.basemvc.service.IHolidayService;
@@ -9,6 +10,8 @@ import cl.barbatos.basemvc.util.ComparatorUtil;
 import cl.barbatos.basemvc.util.DtoConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -59,6 +62,17 @@ public class HolidayService implements IHolidayService {
             return getAllHolidays();
         }
 
+    }
+
+    @Override
+    public Page<HolidayDTO> getAllHolidays(Pageable pageable) {
+        Page<Holiday> holidaysPage = holidayRepository.findAll(pageable);
+        return holidaysPage.map(holiday -> DtoConverter.convertToDto(holiday, HolidayDTO.class));
+    }
+
+    @Override
+    public Page<HolidayDTO> getHolidaysWithFilter(Pageable pageable, HolidayFilterDTO filterDTO) {
+          return null;
     }
 
     private List<HolidayDTO> convertToHolidayDTOs(List<Holiday> holidays) {

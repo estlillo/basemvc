@@ -47,4 +47,8 @@ public class Person extends Auditable {
     @JoinColumn(name = "address_id", referencedColumnName = "id",nullable = true)
     private Address address;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "classroom_id", referencedColumnName = "id",nullable = true)
+    private ClassRoom classRoom;
+
 }
